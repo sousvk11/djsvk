@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 
 
@@ -26,4 +26,45 @@ def home(request):
 
 def about(request):
     return render(request,"about.html")
+
+def userform(request):
+    final='blank'
+    data={}
     
+    try:
+        if request.method=='POST':
+        # email=request.GET["email"]
+        # passw=request.GET["passw"]
+        # city=request.GET["city"]
+        # addr=request.GET["addr"]
+        # zip=request.GET["zip"]
+    
+        # email=request.GET.get("email")
+        # passw = request.GET.get('passw')
+        # city=request.GET.get("city")
+        # addr=request.GET.get("addr")
+        # zip=request.GET.get("zip")  
+            email=request.POST.get("email")
+            passw = request.POST.get('passw')
+            city=request.POST.get("city")
+            addr=request.POST.get("addr")
+            zip=request.POST.get("zip")      
+        
+            final=f'Email is {email},Password is {passw}'
+            data={
+                'email':email,
+                'passw':passw,
+                'city':city,
+                'addr':addr,
+                'zip':zip,
+                'output':final
+            }
+            
+            url=f"/aboutus/?n={data['output']}"
+            #return HttpResponseRedirect('/aboutus/')
+            return  HttpResponseRedirect (url)
+        
+    except:
+        pass
+        
+    return render(request,"userform.html",data) 

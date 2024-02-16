@@ -27,6 +27,7 @@ urlpatterns = [
     #path('course/<str:courseid>',views.coursed),  #This is for string type
     #path('course/<slug:courseid>',views.coursed)  #This is for slug type like abc_dbbd_dd
     path('course/<courseid>',views.coursed),
-    path('aboutus/',views.about)
+    path('aboutus/',views.about),
+    path('userform/',views.userform)
     #This is for any type
 ]
