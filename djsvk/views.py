@@ -1,5 +1,7 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
+from .forms import usersform
+from sousvk.models import svk
 
 
 def aboutus(request):
@@ -12,6 +14,17 @@ def coursed(requets,courseid):
     return HttpResponse (courseid)
 
 def home(request):
+    
+    svkdata=svk.objects.all()
+    # for a in svkdata:
+    #     print(a.icon)
+    
+    data={
+        'svkdata':svkdata
+        
+    }
+    
+    
     # data={
     #     'title':'Home NEW',
     #     'bdata':"WELCOME BABY",
@@ -22,14 +35,15 @@ def home(request):
     #         {'name':'Emily Johnson','age':18,'city':'London'},
     #     ]
     # }
-    return render(request,"index.html")
+    return render(request,"index.html",data)
 
 def about(request):
     return render(request,"about.html")
 
 def userform(request):
     final='blank'
-    data={}
+    fn=usersform()
+    data={'form':fn}
     
     try:
         if request.method=='POST':
@@ -51,15 +65,18 @@ def userform(request):
             zip=request.POST.get("zip")      
         
             final=f'Email is {email},Password is {passw}'
+            # data={
+            #     'email':email,
+            #     'passw':passw,
+            #     'city':city,
+            #     'addr':addr,
+            #     'zip':zip,
+            #     'output':final
+            # }
             data={
-                'email':email,
-                'passw':passw,
-                'city':city,
-                'addr':addr,
-                'zip':zip,
+                'form':fn,
                 'output':final
             }
-            
             url=f"/aboutus/?n={data['output']}"
             #return HttpResponseRedirect('/aboutus/')
             return  HttpResponseRedirect (url)
@@ -68,3 +85,8 @@ def userform(request):
         pass
         
     return render(request,"userform.html",data) 
+
+
+def subm(request):
+    return HttpResponse(request)
+    
